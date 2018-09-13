@@ -43,12 +43,12 @@ sql_insert_palavra = 'insert into palavras (palavra, tag, entidade, arquivo) val
 path = './doc'
 entidades = ['acaoAutor', 'acaoVitima', 'acesso', 'armaAutor', 'autor', 'bensVitima', 'caracteristicaFisicaPessoa', 'caracteristicaVeiculo', 'deslocamentoAutor', 'idadeAutor', 'instrumentoAutor', 'local', 'quantidade', 'vestimentaAutor']
 
-
 for filename in glob.glob(os.path.join(path, '*.json')):
     keys_file  = open(filename, 'r', encoding='utf8')
     keys_json = json.loads(keys_file.read()) # Convert arquivo para json
 
     for entidade in entidades:
+        print("Arquivo: " + filename + " - Entidade:  " + entidade)
         acaoAutor = keys_json[entidade]
         # Fazer splite de frase para palavas
         for dadosText in acaoAutor:        
