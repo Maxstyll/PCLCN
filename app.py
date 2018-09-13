@@ -60,9 +60,9 @@ for filename in glob.glob(os.path.join(path, '*.json')):
                 # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
                 for word, tag in text.pos_tags:
                     # Garantir nao ter palavras duplicadas
-                    sql_search_palavra = " select count(id) from palavras Where palavra = '" + word + "' and tag = '" + tag + "'"
-                    cur.execute(sql_search_palavra)
-                    for count in cur.fetchall():
+                    sql_search_palavra = " Select count(id) from palavras Where palavra = ? And tag = ? "
+                    where = (word, tag)
+                    for count in cur.execute(sql_search_palavra, where).fetchall():
                         if count[0] == 0:
                             rec = (word, tag, entidade, filename)
                             cur.execute(sql_insert_palavra, rec)
