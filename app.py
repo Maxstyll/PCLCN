@@ -3,6 +3,7 @@ import os
 import glob
 import json
 import sqlite3
+import icu
 import polyglot
 
 from polyglot.text import Text, Word
@@ -42,9 +43,15 @@ for filename in glob.glob(os.path.join(path, '*.json')):
     for text in acaoAutor:
         vtTexto = text# Fazer splite de frase para palavas
         text = Text(vtTexto)
-        for word, tag in text.pos_tags:
-            rec = (word, tag, filename)
-            cur.execute(sql_insert_palavra, rec)
+
+        try:
+            for word, tag in text.pos_tags:
+                rec = (word, tag, filename)
+                cur.execute(sql_insert_palavra, rec)
+        except:
+                rec = (vtTexto, 'error digitacao', filename)
+                cur.execute(sql_insert_palavra, rec)
+
 
         vtTexto = vtTexto.split()
         if(len(vtTexto) > 1):
