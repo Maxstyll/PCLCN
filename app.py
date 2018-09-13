@@ -7,6 +7,10 @@ import icu
 import polyglot
 
 from polyglot.text import Text, Word
+from polyglot.downloader import downloader
+
+downloader.download("embeddings2.pt")
+downloader.download("pos2.pt")
 
 # Inicial aplicativo
 
@@ -29,40 +33,56 @@ sql_create_palavras = 'create table palavras '\
 '(id integer primary key AUTOINCREMENT, '\
 'palavra varchar(50), '\
 'tag varchar(10), '\
+'entidade varchar(50), '\
 'arquivo varchar(140))'
 cur.execute(sql_create_palavras)
-sql_insert_palavra = 'insert into palavras (palavra, tag, arquivo) values (?, ?, ?)'
+sql_insert_palavra = 'insert into palavras (palavra, tag, entidade, arquivo) values (?, ?, ?, ?)'
 
 
 # Abrir arquivo
 path = './doc'
+entidades = ['acaoAutor', 'acaoVitima', 'acesso', 'armaAutor', 'autor', 'bensVitima', 'caracteristicaFisicaPessoa', 'caracteristicaVeiculo', 'deslocamentoAutor', 'idadeAutor', 'instrumentoAutor', 'local', 'quantidade', 'vestimentaAutor']
+
+
 for filename in glob.glob(os.path.join(path, '*.json')):
     keys_file  = open(filename, 'r', encoding='utf8')
     keys_json = json.loads(keys_file.read()) # Convert arquivo para json
-    acaoAutor = keys_json["acaoAutor"]
-    for text in acaoAutor:
-        vtTexto = text# Fazer splite de frase para palavas
-        text = Text(vtTexto)
 
-        try:
-            for word, tag in text.pos_tags:
-                rec = (word, tag, filename)
-                cur.execute(sql_insert_palavra, rec)
-        except:
+    for entidade in entidades:
+        acaoAutor = keys_json[entidade]
+        # Fazer splite de frase para palavas
+        for dadosText in acaoAutor:        
+            vtTexto = dadosText
+            text = Text(vtTexto, hint_language_code='pt')
+        
+            #Gravar palavras
+            try:
+                # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
+                for word, tag in text.pos_tags:
+                    rec = (word, tag, entidade, filename)
+                    cur.execute(sql_insert_palavra, rec)
+            except Exception as e:
+                template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+                message = template.format(type(e).__name__, e.args)
+                print (message)
+                
                 rec = (vtTexto, 'error digitacao', filename)
                 cur.execute(sql_insert_palavra, rec)
 
+            #Gravar dados para regra de contesto semantico
+            try:
+                qtdePalavras = vtTexto.split()
+                if(len(qtdePalavras) > 1):
+                    rec = (vtTexto, filename)
+                    cur.execute(sql_insert_miniFrase, rec)
+            except:
+                rec = (vtTexto, 'error dados')
+                cur.execute(sql_insert_miniFrase, rec)
 
-        vtTexto = vtTexto.split()
-        if(len(vtTexto) > 1):
-            print(text) #Gravar dados para regra de contesto semantico
-            rec = (text, filename)
-            cur.execute(sql_insert_miniFrase, rec)
-
-        con.commit()
+            con.commit()
 
     
 # Garantir nao ter palavras duplicadas
-# Insert dados em uma tabela SQLite
-# Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
+
+
 # Identificar em qual intencao ele se enquadra (fugir, subtrair, coacao, simulando, portar, agrecao, abordagem, quantidade, vestir, deslocar, veiculo, arma, Autor, caracteristicaAutor, acaoVitiva, bensVitima, outros)
