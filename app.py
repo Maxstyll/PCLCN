@@ -59,8 +59,13 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             try:
                 # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
                 for word, tag in text.pos_tags:
-                    rec = (word, tag, entidade, filename)
-                    cur.execute(sql_insert_palavra, rec)
+                    # Garantir nao ter palavras duplicadas
+                    sql_search_palavra = " select count(id) from palavras Where palavra = '" + word + "' and tag = '" + tag + "'"
+                    cur.execute(sql_search_palavra)
+                    for count in cur.fetchall():
+                        if count[0] == 0:
+                            rec = (word, tag, entidade, filename)
+                            cur.execute(sql_insert_palavra, rec)
             except Exception as e:
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(e).__name__, e.args)
@@ -82,7 +87,7 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             con.commit()
 
     
-# Garantir nao ter palavras duplicadas
+
 
 
 # Identificar em qual intencao ele se enquadra (fugir, subtrair, coacao, simulando, portar, agrecao, abordagem, quantidade, vestir, deslocar, veiculo, arma, Autor, caracteristicaAutor, acaoVitiva, bensVitima, outros)
