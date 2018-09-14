@@ -1,0 +1,5 @@
+Globally, the datasets live in a new central dedicated Github repository, gensim-data. Its README contains a list of resources available right now (more in the making, domain-specific contributions welcome!).
+Locally, on your machine after you download them, the datasets live inside the ~/gensim-data folder. The relevant files are retrieved from Github and re-assembled here if necessary (more on that below).
+Github allows storing an unlimited number of files, acts as a good CDN, has (mostly) good world-wide availability (except some shenanigans by China), DOS protection. The only limitation is that all files must be smaller than 2GB, which is annoying because many NLP corpora hit that limit easily.
+We solved that problem by splitting large files into several smaller files on storage (in Github), then re-assembling them transparently during the download (your disk).
+Note that you don’t have to clone or install this gensim-data repository, it’s a technical detail you can simply ignore. Gensim knows the data location and when you call something like gensim.downloader.api.load(“text8”), Gensim will automatically locate and download the correct file.
