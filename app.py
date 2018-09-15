@@ -33,13 +33,13 @@ sql_insert_miniFrase = 'insert into miniFrases (texto, entidade, arquivo) values
 
 
 # Criar as Tabelas palavras
-sql_create_palavras = 'create table palavras '\
-'(id integer primary key AUTOINCREMENT, '\
-'palavra varchar(50), '\
-'tag varchar(10), '\
-'entidade varchar(50), '\
-'arquivo varchar(140))'
-cur.execute(sql_create_palavras)
+#sql_create_palavras = 'create table palavras '\
+#'(id integer primary key AUTOINCREMENT, '\
+#'palavra varchar(50), '\
+#'tag varchar(10), '\
+#'entidade varchar(50), '\
+#'arquivo varchar(140))'
+#cur.execute(sql_create_palavras)
 sql_insert_palavra = 'insert into palavras (palavra, tag, entidade, arquivo) values (?, ?, ?, ?)'
 
 
@@ -89,9 +89,5 @@ for filename in glob.glob(os.path.join(path, '*.json')):
                 cur.execute(sql_insert_miniFrase, rec)
 
             con.commit()
-
-    
-
-
 
 # Identificar em qual intencao ele se enquadra (fugir, subtrair, coacao, simulando, portar, agrecao, abordagem, quantidade, vestir, deslocar, veiculo, arma, Autor, caracteristicaAutor, acaoVitiva, bensVitima, outros)
