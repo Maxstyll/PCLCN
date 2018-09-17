@@ -90,8 +90,4 @@ for filename in glob.glob(os.path.join(path, '*.json')):
 
             con.commit()
 
-    
-
-
-
 # Identificar em qual intencao ele se enquadra (fugir, subtrair, coacao, simulando, portar, agrecao, abordagem, quantidade, vestir, deslocar, veiculo, arma, Autor, caracteristicaAutor, acaoVitiva, bensVitima, outros)
