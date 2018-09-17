@@ -20,15 +20,15 @@ con = sqlite3.connect('./db/dadosDipol.db')
 cur = con.cursor()
 
 # Criar as Tabelas miniFrase
-sql_delete_miniFrase = 'drop table miniFrases '
-cur.execute(sql_delete_miniFrase)
+#sql_delete_miniFrase = 'drop table miniFrases '
+#cur.execute(sql_delete_miniFrase)
 
-sql_create_miniFrase = 'create table miniFrases '\
-'(id integer primary key AUTOINCREMENT, '\
-'texto varchar(200), '\
-'entidade varchar(50), '\
-'arquivo varchar(140))'
-cur.execute(sql_create_miniFrase)
+#sql_create_miniFrase = 'create table miniFrases '\
+#'(id integer primary key AUTOINCREMENT, '\
+#'texto varchar(200), '\
+#'entidade varchar(50), '\
+#'arquivo varchar(140))'
+#cur.execute(sql_create_miniFrase)
 sql_insert_miniFrase = 'insert into miniFrases (texto, entidade, arquivo) values (?, ?, ?)'
 
 
