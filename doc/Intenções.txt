@@ -175,7 +175,7 @@ quantidade
 ---------------------------------------
         um, 1
         ambos, dois, 2, duas
-        tres, trés, três, 3
+        três, 3
         quantro, 4
         cinco, 5
         seis, 6

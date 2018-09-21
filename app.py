@@ -15,31 +15,26 @@ downloader.download("pos2.pt")
 # Inicial aplicativo
 
 # Criar o Banco de Dados
-# os.remove("./db/dadosDipol.db") if os.path.exists("./db/dadosDipol.db") else None
 con = sqlite3.connect('./db/dadosDipol.db')
 cur = con.cursor()
 
-# Criar as Tabelas miniFrase
-#sql_delete_miniFrase = 'drop table miniFrases '
-#cur.execute(sql_delete_miniFrase)
-
-#sql_create_miniFrase = 'create table miniFrases '\
-#'(id integer primary key AUTOINCREMENT, '\
-#'texto varchar(200), '\
-#'entidade varchar(50), '\
-#'arquivo varchar(140))'
-#cur.execute(sql_create_miniFrase)
+sql_create_miniFrase = 'CREATE TABLE IF NOT EXISTS miniFrases '\
+'(id integer primary key AUTOINCREMENT, '\
+'texto varchar(200), '\
+'entidade varchar(50), '\
+'arquivo varchar(140))'
+cur.execute(sql_create_miniFrase)
 sql_insert_miniFrase = 'insert into miniFrases (texto, entidade, arquivo) values (?, ?, ?)'
 
 
 # Criar as Tabelas palavras
-# sql_create_palavras = 'create table palavras '\
-# '(id integer primary key AUTOINCREMENT, '\
-# 'palavra varchar(50), '\
-# 'tag varchar(10), '\
-# 'entidade varchar(50), '\
-# 'arquivo varchar(140))'
-# cur.execute(sql_create_palavras)
+sql_create_palavras = 'CREATE TABLE IF NOT EXISTS  palavras '\
+'(id integer primary key AUTOINCREMENT, '\
+'palavra varchar(50), '\
+'tag varchar(10), '\
+'entidade varchar(50), '\
+'arquivo varchar(140))'
+cur.execute(sql_create_palavras)
 sql_insert_palavra = 'insert into palavras (palavra, tag, entidade, arquivo) values (?, ?, ?, ?)'
 
 
