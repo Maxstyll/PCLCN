@@ -5,13 +5,18 @@ import json
 import sqlite3
 import icu
 import polyglot
+import pickle
 
 from polyglot.text import Text, Word
 from polyglot.downloader import downloader
 from polyglot.mapping import Embedding
 
+# https://sites.google.com/site/rmyeid/projects/polyglot
+# http://nbviewer.jupyter.org/gist/aboSamoor/6046170
 
-embeddings = Embedding.load("./doc/polyglot-pt.pkl")
+embeddings = pickle.load(open('./doc/polyglot_pt.pkl', 'rb'))
+embeddings = Embedding.load("./doc/polyglot_pt.pkl")
+
 downloader.download("embeddings2.pt")
 downloader.download("pos2.pt")
 
