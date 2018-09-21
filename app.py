@@ -8,7 +8,10 @@ import polyglot
 
 from polyglot.text import Text, Word
 from polyglot.downloader import downloader
+from polyglot.mapping import Embedding
 
+
+embeddings = Embedding.load("./doc/polyglot-pt.pkl")
 downloader.download("embeddings2.pt")
 downloader.download("pos2.pt")
 
