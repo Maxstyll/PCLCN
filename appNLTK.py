@@ -1,15 +1,36 @@
 import os
-import codecs
 import glob
 import json
 import sqlite3
+import pickle
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
-from nltk.tag import pos_tag
-
+from nltk.metrics import binary_distance
 
 portugue_stops = set(stopwords.words('portuguese'))
-SnowballStemmer.languages
+portugue_stops.add('e')
+portugue_stops.add('é')
+portugue_stops.add('p')
+portugue_stops.add('d')
+portugue_stops.add('á')
+portugue_stops.add('c')
+portugue_stops.add('!')
+portugue_stops.add('$')
+portugue_stops.add('.')
+portugue_stops.add(',')
+portugue_stops.add('@')
+portugue_stops.add("'")
+portugue_stops.add("`")
+portugue_stops.add("''")
+portugue_stops.add("``")
+portugue_stops.add("+/-")
+portugue_stops.add("+/")
+portugue_stops.add("+-")
+portugue_stops.add("+")
+portugue_stops.add("_")
+portugue_stops.add("/")
+portugue_stops.add(";")
+portugue_stops.add(":")
 
 # Criar o Banco de Dados
 con = sqlite3.connect('./db/dadosDipolNLTK.db')
@@ -32,12 +53,26 @@ sql_create_palavras = 'CREATE TABLE IF NOT EXISTS palavras '\
  'entidade varchar(50), '\
  'arquivo varchar(140))'
 cur.execute(sql_create_palavras)
+
+sql_delete_palavras = 'DELETE FROM palavras WHERE tag IS NULL'
+cur.execute(sql_delete_palavras)
 sql_insert_palavra = 'insert into palavras (palavra, tag, entidade, arquivo) values (?, ?, ?, ?)'
 
-# Abrir arquivo
-path = './doc'
-entidades = ['acaoAutor', 'acaoVitima', 'acesso', 'armaAutor', 'autor', 'bensVitima', 'caracteristicaFisicaPessoa', 'caracteristicaVeiculo', 'deslocamentoAutor', 'idadeAutor', 'instrumentoAutor', 'local', 'quantidade', 'vestimentaAutor']
+# Abrir arquivopath = './doc'
+entidades = ['acaoAutor', 'acaoVitima', 'acesso', 'armaAutor', 'autor', 'bensVitima', 'caracteristicaFisicaPessoa', 'caracteristicaVeiculo', 'deslocamentoAutor', 'idadeAutor', 'instrumentoAutor', 'quantidade', 'vestimentaAutor']
 
+# Nome do Tagger
+fileName = "dicPolicial.pickle"
+def loadMyTagger(fileName):
+    return pickle.load(open(fileName, "rb"))
+
+dicPolicial = loadMyTagger(fileName)
+
+# Recebe um texto como input e imprime a lista de tokens com as tags definidas usando expressões regulares
+def learnLookupTagger(palavra):
+    # Aplicando o Etiquetador ao conjunto de palavras
+    posEnabledTags = dicPolicial.tag(palavra)
+    return posEnabledTags
 
 for filename in glob.glob(os.path.join(path, '*.json')):
     keys_file  = open(filename, 'r', encoding='utf8')
@@ -50,10 +85,11 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             #Separa as frases
             sentencas = sent_tokenize(dadosText)
             for sentenca in sentencas:
+                sentenca = sentenca.replace('.', '').replace('-', '').replace("'", '').replace('`', '').replace('``', '').replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('*', '').casefold()
                 palavas  = word_tokenize(sentenca)
 
                 # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
-                for word, tag in pos_tag(palavas):
+                for word, tag in learnLookupTagger(palavas):
                     #Remoção das stopwords
                     if  word not in portugue_stops:
                         try:

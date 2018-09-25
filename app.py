@@ -11,11 +11,16 @@ from polyglot.text import Text, Word
 from polyglot.downloader import downloader
 from polyglot.mapping import Embedding
 
+fileName = "dicPolicial.pickle"
+
 # https://sites.google.com/site/rmyeid/projects/polyglot
 # http://nbviewer.jupyter.org/gist/aboSamoor/6046170
 
-embeddings = pickle.load(open('./doc/polyglot_pt.pkl', 'rb'))
-embeddings = Embedding.load("./doc/polyglot_pt.pkl")
+
+def loadMyTagger(fileName):
+    return pickle.load(open(fileName, "rb"))
+
+embeddings = loadMyTagger(fileName)
 
 downloader.download("embeddings2.pt")
 downloader.download("pos2.pt")
@@ -66,6 +71,10 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             try:
                 # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
                 for word, tag in text.pos_tags:
+                    neighbors = embeddings.nearest_neighbors(word)
+                    for w,d in zip(neighbors, embeddings.distances(word, neighbors)):
+                        print("{:<8}{:.4f}".format(w,d))
+
                     # Garantir nao ter palavras duplicadas
                     sql_search_palavra = " Select count(id) from palavras Where palavra = ? And tag = ? "
                     where = (word, tag)
