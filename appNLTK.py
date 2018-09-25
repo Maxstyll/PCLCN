@@ -58,7 +58,8 @@ sql_delete_palavras = 'DELETE FROM palavras WHERE tag IS NULL'
 cur.execute(sql_delete_palavras)
 sql_insert_palavra = 'insert into palavras (palavra, tag, entidade, arquivo) values (?, ?, ?, ?)'
 
-# Abrir arquivopath = './doc'
+# Abrir arquivo
+path = './doc'
 entidades = ['acaoAutor', 'acaoVitima', 'acesso', 'armaAutor', 'autor', 'bensVitima', 'caracteristicaFisicaPessoa', 'caracteristicaVeiculo', 'deslocamentoAutor', 'idadeAutor', 'instrumentoAutor', 'quantidade', 'vestimentaAutor']
 
 # Nome do Tagger
