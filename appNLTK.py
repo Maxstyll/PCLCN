@@ -86,7 +86,7 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             #Separa as frases
             sentencas = sent_tokenize(dadosText)
             for sentenca in sentencas:
-                sentenca = sentenca.replace('.', '').replace('-', '').replace("'", '').replace('`', '').replace('``', '').replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('*', '').casefold()
+                sentenca = sentenca.replace('.', '').replace('-', '').replace("'", '').replace('`', '').replace('``', '').replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '').replace('*', '').casefold()
 
                 palavas  = word_tokenize(sentenca)
 
