@@ -31,6 +31,8 @@ portugue_stops.add("_")
 portugue_stops.add("/")
 portugue_stops.add(";")
 portugue_stops.add(":")
+portugue_stops.add("%")
+portugue_stops.add("&")
 
 # Criar o Banco de Dados
 con = sqlite3.connect('./db/dadosDipolNLTK.db')
@@ -86,9 +88,9 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             #Separa as frases
             sentencas = sent_tokenize(dadosText)
             for sentenca in sentencas:
-                sentenca = sentenca.replace('.', '').replace('-', '').replace("'", '').replace('`', '').replace('``', '').replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('{', '').replace('}', '').replace('*', '').casefold()
+                textoReplace = sentenca.replace('+', ' ').replace(':', ' ').replace('/', ' ').replace('.', ' ').replace('-', ' ').replace("'", ' ').replace('`', ' ').replace('``', ' ').replace('[', ' ').replace(']', ' ').replace('(', ' ').replace(')', ' ').replace('{', ' ').replace('}', ' ').replace('*', ' ').casefold()
 
-                palavas  = word_tokenize(sentenca)
+                palavas  = word_tokenize(textoReplace)
 
                 # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
                 for word, tag in learnLookupTagger(palavas):
