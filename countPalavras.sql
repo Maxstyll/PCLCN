@@ -11,3 +11,9 @@ FROM 	palavras
 WHERE 	tag IS NOT NULL	
 GROUP BY tag
 ORDER BY tag, COUNT(palavra) DESC;
+
+
+SELECT 	tag, palavra 
+FROM 	palavras 
+WHERE 	tag = 'WRB'	
+ORDER BY tag, palavra;
