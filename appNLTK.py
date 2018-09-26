@@ -70,9 +70,9 @@ def loadMyTagger(fileName):
 dicPolicial = loadMyTagger(fileName)
 
 # Recebe um texto como input e imprime a lista de tokens com as tags definidas usando expressões regulares
-def learnLookupTagger(palavra):
+def learnLookupTagger(text):
     # Aplicando o Etiquetador ao conjunto de palavras
-    posEnabledTags = dicPolicial.tag(palavra)
+    posEnabledTags = dicPolicial.tag(text)
     return posEnabledTags
 
 for filename in glob.glob(os.path.join(path, '*.json')):
@@ -87,6 +87,7 @@ for filename in glob.glob(os.path.join(path, '*.json')):
             sentencas = sent_tokenize(dadosText)
             for sentenca in sentencas:
                 sentenca = sentenca.replace('.', '').replace('-', '').replace("'", '').replace('`', '').replace('``', '').replace('[', '').replace(']', '').replace('(', '').replace(')', '').replace('*', '').casefold()
+
                 palavas  = word_tokenize(sentenca)
 
                 # Identificar em qual classes variaveis a palavra se enquadra (artigo, adjetivo, pronome, numeral, substantivo e verbo)
