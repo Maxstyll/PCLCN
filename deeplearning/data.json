@@ -1,0 +1,7 @@
+{
+	"tempo": ["Pode informar as horas?", "Quanto tempo passou desde que começamos?", "isso ocorreu algum tempo atrás", "eu falei com você semana passada", "eu vi você ontem"],
+	"desculpa": ["Me desculpe", "Ele pediu desculpas?", "Eu não devia ter sido rude"],
+	"agradecimento": ["Olá, tudo bem? Muito obrigado!", "Agradeço pela sua ajuda?", "Muito obrigado"],
+	"despedida": ["Foi um prazer conhecer você", "Adeus.", "Vejo você em breve", "Preciso ir agora."],
+	"idade": ["qual sua idade?", "Quantos anos você tem?", "Eu sou alguns anos mais velho que ela", "você parece mais velho!"]
+}
